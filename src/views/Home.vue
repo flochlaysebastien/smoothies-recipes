@@ -17,30 +17,13 @@
 </template>
 
 <script>
-// @ is an alias to /src
-// import HelloWorld from '@/components/HelloWorld.vue'
+import db from '@/firebase/init'
 
 export default {
   name: "Home",
-  // components: {
-  //   HelloWorld
-  // }
   data() {
     return {
-      smoothies: [
-        {
-          title: "Zelda Brew",
-          slug: "zelda-brew",
-          ingredients: ["bananas", "coffee", "milk"],
-          id: "1"
-        },
-        {
-          title: "Mario Mood",
-          slug: "mario-mood",
-          ingredients: ["mango", "lime", "juice"],
-          id: "2"
-        }
-      ]
+      smoothies: []
     };
   },
   methods: {
@@ -49,8 +32,19 @@ export default {
         return smoothie.id != id;
       });
     }
+  },
+  created() {
+    db.collection('smoothies').get()
+    .then(snapshot => {
+      snapshot.forEach(doc => {
+        console.log(doc.data())
+        let smoothie = doc.data()
+        smoothie.id = doc.id
+        this.smoothies.push(smoothie)
+      })
+    })
   }
-};
+}
 </script>
 
 <style>

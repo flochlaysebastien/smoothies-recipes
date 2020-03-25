@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import db from '@/firebase/init'
+import db from "@/firebase/init";
 
 export default {
   name: "Home",
@@ -28,23 +28,30 @@ export default {
   },
   methods: {
     deleteSmoothie(id) {
-      this.smoothies = this.smoothies.filter(smoothie => {
-        return smoothie.id != id;
-      });
+      console.log(id);
+      db.collection("smoothies").doc(id).delete()
+        .then(() => {
+          this.smoothies = this.smoothies.filter(smoothie => {
+            return smoothie.id != id;
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   },
   created() {
-    db.collection('smoothies').get()
-    .then(snapshot => {
-      snapshot.forEach(doc => {
-        console.log(doc.data())
-        let smoothie = doc.data()
-        smoothie.id = doc.id
-        this.smoothies.push(smoothie)
-      })
-    })
+    db.collection("smoothies").get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          console.log(doc.data());
+          let smoothie = doc.data();
+          smoothie.id = doc.id;
+          this.smoothies.push(smoothie);
+        });
+      });
   }
-}
+};
 </script>
 
 <style>

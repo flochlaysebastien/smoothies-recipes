@@ -40,6 +40,10 @@ export default {
   },
   methods: {
     addSmoothie() {
+      if (!this.title) {
+        return;
+      }
+
       if (this.newIngredient) {
         this.ingredients.push(this.newIngredient);
         this.newIngredient = null;

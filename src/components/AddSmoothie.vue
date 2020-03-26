@@ -8,15 +8,20 @@
       </div>
       <div v-for="(ing, index) in ingredients" class="field ingredient" :key="index">
         <label for="ingredient">Ingredient:</label>
-        <input type="text" name="ingredient" v-model="ingredients[index]">
+        <input type="text" name="ingredient" v-model="ingredients[index]" />
       </div>
       <div class="field add-ingredient">
-      <label for="add-ingredient">Add an ingredient:</label>
-      <input type="text" name="add-ingredient" @keydown.tab.prevent="addIngredient" v-model="newIngredient">
+        <label for="add-ingredient">Add an ingredient:</label>
+        <input
+          type="text"
+          name="add-ingredient"
+          @keydown.tab.prevent="addIngredient"
+          v-model="newIngredient"
+        />
       </div>
       <div class="field center-align">
-      <p v-if="feedback" class="red-text">{{ feedback }}</p>
-      <button class="btn pink">Add Smoothie</button>
+        <p v-if="feedback" class="red-text">{{ feedback }}</p>
+        <button class="btn pink">Add Smoothie</button>
       </div>
     </form>
   </div>
@@ -24,44 +29,49 @@
 
 <script>
 export default {
-    name: 'AddSmoothie',
-    data() {
-        return {
-            title: null,
-            ingredients: [],
-            newIngredient: null,
-            feedback: null
-        }
+  name: "AddSmoothie",
+  data() {
+    return {
+      title: null,
+      ingredients: [],
+      newIngredient: null,
+      feedback: null
+    };
+  },
+  methods: {
+    addSmoothie() {
+      if (this.newIngredient) {
+        this.ingredients.push(this.newIngredient);
+        this.newIngredient = null;
+      }
+
+      console.log(this.title, this.ingredients);
     },
-    methods: {
-        addSmoothie(){
-            console.log(this.title, this.ingredients)
-        },
-        addIngredient(){
-            if(this.newIngredient) {
-                console.log(this.newIngredient)
-                this.ingredients.push(this.newIngredient)
-                this.newIngredient = null
-                this.feedback = null
-            } else {
-                this.feedback = 'You must enter a value to an an ingredient'
-            }
-        }
-    },
+    addIngredient() {
+      if (this.newIngredient) {
+        console.log(this.newIngredient);
+        this.ingredients.push(this.newIngredient);
+        this.newIngredient = null;
+        this.feedback = null;
+      } else {
+        this.feedback = "You must enter a value to an an ingredient";
+      }
+    }
+  }
 };
 </script>
 
 <style>
-.add-smoothie{
+.add-smoothie {
   margin-top: 60px;
   padding: 20px;
   max-width: 500px;
 }
-.add-smoothie h2{
+.add-smoothie h2 {
   font-size: 2em;
   margin: 20px auto;
 }
-.add-smoothie .field{
+.add-smoothie .field {
   margin: 20px auto;
 }
 </style>

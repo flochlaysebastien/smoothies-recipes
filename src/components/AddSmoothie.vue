@@ -41,9 +41,12 @@ export default {
   methods: {
     addSmoothie() {
       if (!this.title) {
+        this.feedback = "You must enter a smoothie title";
         return;
       }
 
+      this.feedback = null;
+      
       if (this.newIngredient) {
         this.ingredients.push(this.newIngredient);
         this.newIngredient = null;

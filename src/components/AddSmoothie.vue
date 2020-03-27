@@ -28,6 +28,8 @@
 </template>
 
 <script>
+import db from "@/firebase/init";
+
 export default {
   name: "AddSmoothie",
   data() {
@@ -46,17 +48,25 @@ export default {
       }
 
       this.feedback = null;
-      
       if (this.newIngredient) {
         this.ingredients.push(this.newIngredient);
         this.newIngredient = null;
       }
 
-      console.log(this.title, this.ingredients);
+      db.collection("smoothies")
+        .add({
+          title: this.title,
+          ingredients: this.ingredients,
+          slug: this.title.toLowerCase()
+        })
+        .then(() => {
+          this.$router.push({ name: "Home" });
+        })
+        .catch(err => {
+          console.log(err)});
     },
     addIngredient() {
       if (this.newIngredient) {
-        console.log(this.newIngredient);
         this.ingredients.push(this.newIngredient);
         this.newIngredient = null;
         this.feedback = null;

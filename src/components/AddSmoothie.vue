@@ -11,7 +11,7 @@
         <input type="text" name="ingredient" v-model="ingredients[index]" />
       </div>
       <div class="field add-ingredient">
-        <label for="add-ingredient">Add an ingredient:</label>
+        <label for="add-ingredient">Add an ingredient (press tab to add):</label>
         <input
           type="text"
           name="add-ingredient"
@@ -29,6 +29,7 @@
 
 <script>
 import db from "@/firebase/init";
+import slugify from "slugify";
 
 export default {
   name: "AddSmoothie",
@@ -37,7 +38,8 @@ export default {
       title: null,
       ingredients: [],
       newIngredient: null,
-      feedback: null
+      feedback: null,
+      slug: null
     };
   },
   methods: {
@@ -53,17 +55,24 @@ export default {
         this.newIngredient = null;
       }
 
+      this.slug = slugify(this.title, {
+        replacement: "-",
+        remove: /[$*_+~.()'"!\-:@]/g,
+        lower: true
+      });
+
       db.collection("smoothies")
         .add({
           title: this.title,
           ingredients: this.ingredients,
-          slug: this.title.toLowerCase()
+          slug: this.slug
         })
         .then(() => {
           this.$router.push({ name: "Home" });
         })
         .catch(err => {
-          console.log(err)});
+          console.log(err);
+        });
     },
     addIngredient() {
       if (this.newIngredient) {
@@ -71,7 +80,7 @@ export default {
         this.newIngredient = null;
         this.feedback = null;
       } else {
-        this.feedback = "You must enter a value to an an ingredient";
+        this.feedback = "You must enter a value to add a new ingredient";
       }
     }
   }

@@ -1,7 +1,5 @@
 <template>
   <div class="index container">
-    <!-- <img alt="Vue logo" src="../assets/logo.png">
-    // <HelloWorld msg="Welcome to Your Vue.js App"/>-->
     <div class="card" v-for="smoothie in smoothies" :key="smoothie.id">
       <div class="card-content">
         <i class="material-icons delete" @click="deleteSmoothie(smoothie.id)">delete</i>

@@ -30,6 +30,7 @@
 
 <script>
 import db from "@/firebase/init";
+import slugify from "slugify";
 
 export default {
   name: "EditSmoothie",
@@ -42,7 +43,37 @@ export default {
   },
   methods: {
     editSmoothie() {
-        console.log(this.smoothie)
+      console.log(this.smoothie);
+      if (!this.smoothie.title) {
+        this.feedback = "You must enter a smoothie title";
+        return;
+      }
+
+      this.feedback = null;
+      if (this.newIngredient) {
+        this.smoothie.ingredients.push(this.newIngredient);
+        this.newIngredient = null;
+      }
+
+      this.slug = slugify(this.smoothie.title, {
+        replacement: "-",
+        remove: /[$*_+~.()'"!\-:@]/g,
+        lower: true
+      });
+
+      db.collection("smoothies")
+        .doc(this.smoothie.id)
+        .update({
+          title: this.smoothie.title,
+          ingredients: this.smoothie.ingredients,
+          slug: this.smoothie.slug
+        })
+        .then(() => {
+          this.$router.push({ name: "Home" });
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     addIngredient() {
       if (this.newIngredient) {
@@ -54,9 +85,11 @@ export default {
       }
     },
     deleteIngredient(ing) {
-      this.smoothie.ingredients = this.smoothie.ingredients.filter(ingredient => {
-        return ingredient != ing;
-      });
+      this.smoothie.ingredients = this.smoothie.ingredients.filter(
+        ingredient => {
+          return ingredient != ing;
+        }
+      );
     }
   },
   created() {

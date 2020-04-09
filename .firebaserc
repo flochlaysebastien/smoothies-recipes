@@ -1,5 +1,14 @@
 {
   "projects": {
-    "default": "smoothies-recipes-vuejs-demo"
+    "default": "vue-workshop-applications"
+  },
+  "targets": {
+    "vue-workshop-applications": {
+      "hosting": {
+        "smoothie": [
+          "workshop-vue-smoothie-recipes"
+        ]
+      }
+    }
   }
 }

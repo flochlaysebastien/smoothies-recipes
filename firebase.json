@@ -4,6 +4,8 @@
     "indexes": "firestore.indexes.json"
   },
   "hosting": {
+    "site": "workshop-vue-smoothie-recipes",
+    "target": "smoothie",
     "public": "dist",
     "ignore": [
       "firebase.json",
